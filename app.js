@@ -4,9 +4,9 @@ class Rooot extends Component {
     static template = xml`
     <div>
         <div class="input-group-lg w100 d-flex border rounded align-items-center">
-            <input type="text" class="form-control-lg flex-fill border-0 me-1" placeholder="Add your new task" aria-label="Add your new task" aria-describedby="button-addon2"/>
-            <input type="color" class="form-control-lg form-control-color border-0 bg-white" id="color" value="#563d7c" title="Choose your color"/>
-            <button class="btn btn-primary" type="button" id="button-addon2"><i class="bi bi-plus-lg fs-3"></i></button>
+            <input type="text" class="form-control-lg flex-fill border-0 me-1" placeholder="Add your new task" aria-label="Add your new task" aria-describedby="button-addon2" t-att-value="state.name" t-model="state.name"/>
+            <input type="color" class="form-control-lg form-control-color border-0 bg-white" id="color" t-att-value="state.color" title="Choose your color" t-model="state.color"/>
+            <button class="btn btn-primary" type="button" id="button-addon2" t-on-click="addTask"><i class="bi bi-plus-lg fs-3"></i></button>
         </div>
     </div>
 
@@ -30,12 +30,36 @@ class Rooot extends Component {
     `
 
     setup(){
-        this.tasks = useState([
-            {id:1, name: "Task 1", color:"#fff000", completed: false},
-            {id:2, name: "Task 2", color:"#ff0000", completed: false},
-            {id:3, name: "Task 3", color:"#fff000", completed: false},
-        ])
+        this.state = useState({
+            name: "",
+            color: "#FFF000",
+            isCompleted: false
+        })
+        this.tasks = useState([])
     }
+
+    addTask(){
+
+        if (!this.state.name){
+            alert("Please enter a task name")
+            return
+        }
+
+        const id = Math.random().toString().substring(2, 12)
+
+        this.tasks.push({
+            id:id,
+            name: this.state.name,
+            color: this.state.color,
+            isCompleted: false,
+        })
+        let state = this.state
+        this.state = {...state, name: "", color: "#FFF000"}
+
+        console.log(this.tasks)
+    }
+
+
 }
 
 mount(Rooot, document.getElementById("root"))
