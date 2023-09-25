@@ -20,7 +20,6 @@ class Task extends Component {
             </div>
         </li>
     `
-
     static props = ["task", "onDelete", "onEdit"]
 
     setup(){
@@ -34,18 +33,22 @@ class Task extends Component {
     }
 
     toggleTask(){
-        // this.props.task.isCompleted = !this.props.task.isCompleted
         this.state.isCompleted = !this.state.isCompleted
     }
     deleteTask(){
+        // Esta función delega el trabajo en la misma función del componente padre
+        // gracias a la propiedad "onDelete" que se le pasa al componente desde el padre
         this.props.onDelete(this.props.task)
     }
     editTask(){
+       
         this.state.isEditing = true
     }
     saveTask(){
+        // Delego el trabajo en la función del componente padre gracias a la 
+        //propiedad "onEdit" que me he creado y que está enlazada a la función
+        // editTask
         this.state.isEditing = false
-        // console.log(this.state)
         this.props.onEdit(this.state)
     }
 }
@@ -95,8 +98,6 @@ class Rooot extends Component {
         })
         let state = this.state
         this.state = {...state, name: "", color: "#FFF000"}
-
-        console.log(this.tasks)
     }
 
     deleteTask(task){
@@ -107,8 +108,6 @@ class Rooot extends Component {
         const index = this.tasks.findIndex(t=>t.id === task.id)
         this.tasks.splice(index, 1, task)
     }
-
-
 }
 
 mount(Rooot, document.getElementById("root"))
